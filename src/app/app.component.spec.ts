@@ -1,31 +1,37 @@
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { TestBed, async } from '@angular/core/testing'
+import { RouterTestingModule } from '@angular/router/testing'
+import { AppComponent } from './app.component'
+import { LocationComponent } from './../pages/location/location.component'
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
+      imports: [
+        RouterTestingModule
       ],
-    }).compileComponents();
-  }));
+      declarations: [
+        AppComponent,
+        LocationComponent
+      ],
+    }).compileComponents()
+  }))
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
+    const fixture = TestBed.createComponent(AppComponent)
+    const app = fixture.debugElement.componentInstance
+    expect(app).toBeTruthy()
+  })
 
-  it(`should have as title 'dockerangular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('dockerangular');
-  });
+  // it(`should have as title 'ngApp'`, () => {
+  //   const fixture = TestBed.createComponent(AppComponent)
+  //   const app = fixture.debugElement.componentInstance
+  //   expect(app.title).toEqual('ngApp')
+  // })
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('dockerangular app is running!');
-  });
-});
+  // it('should render title', () => {
+  //   const fixture = TestBed.createComponent(AppComponent)
+  //   fixture.detectChanges()
+  //   const compiled = fixture.debugElement.nativeElement
+  //   expect(compiled.querySelector('.content span').textContent).toContain('ngApp app is running!')
+  // })
+})
