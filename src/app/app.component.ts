@@ -1,7 +1,4 @@
-import { Component } from '@angular/core'
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
-
-
+import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,10 +6,8 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
 })
 export class AppComponent {
 
-  constructor(public router: Router) {
-
+  constructor() {
 
   }
-
 
 }
