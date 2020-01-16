@@ -6,7 +6,9 @@ import { catchError } from 'rxjs/operators';
 import { Location } from './../../interfaces/location';
 import { Helpers } from './../../config/helpers';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LocationService {
 
   headers = new HttpHeaders()
@@ -20,8 +22,8 @@ export class LocationService {
 
   }
 
-  createLocation(location: Location): Observable<Location[]> {
-    return this.http.post<Location[]>(`${env.apiUrl}/location/create`, location, this.httpOptions).pipe(
+  createLocation(location: Location): Observable<Location>  {
+    return this.http.post(`${env.apiUrl}/location/create`, location, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
   }
@@ -38,9 +40,9 @@ export class LocationService {
     );
   }
 
-  updateLocationById(location: Location, id: string): Observable<Location[]> {
+  updateLocationById(location: Location, id: string): Observable<Location> {
     console.log(env.apiUrl);
-    return this.http.put<Location[]>(`${env.apiUrl}/location/${id}`, location, this.httpOptions).pipe(
+    return this.http.put<Location>(`${env.apiUrl}/location/${id}`, location, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
   }
