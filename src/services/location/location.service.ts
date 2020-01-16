@@ -28,8 +28,8 @@ export class LocationService {
     );
   }
 
-  getLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>(`${env.apiUrl}/locations`, this.httpOptions).pipe(
+  getLocations(paginatonObj?: any): Observable<Location[]> {
+    return this.http.get<Location[]>(`${env.apiUrl}/locations?page=${paginatonObj.page}&limit=${paginatonObj.limit}`, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
   }

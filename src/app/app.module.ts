@@ -8,7 +8,8 @@ import { LocationComponent } from './../pages/location/location.component';
 import { Constants } from './../config/constants';
 import { LocationService } from './../services/location/location.service';
 import { Helpers } from './../config/helpers';
-import { DataTablesModule } from 'angular-datatables';
+import {AgGridModule} from 'ag-grid-angular';
+
 
 @NgModule({
   declarations: [
@@ -17,9 +18,9 @@ import { DataTablesModule } from 'angular-datatables';
   ],
   imports: [
     BrowserModule,
+    AgGridModule.withComponents([]),
     AppRoutingModule,
-    HttpClientModule,
-    DataTablesModule
+    HttpClientModule
   ],
   providers: [
     Constants,

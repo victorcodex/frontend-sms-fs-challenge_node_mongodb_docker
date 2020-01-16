@@ -12,4 +12,9 @@ export class Constants {
         color : '#819a11'
     };
 
+    PAGINATION_OBJ = {
+        page: 1,
+        limit: 100
+      };
+
 }
