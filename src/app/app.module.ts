@@ -8,6 +8,7 @@ import { LocationComponent } from './../pages/location/location.component';
 import { Constants } from './../config/constants';
 import { LocationService } from './../services/location/location.service';
 import { Helpers } from './../config/helpers';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { Helpers } from './../config/helpers';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule
   ],
   providers: [
     Constants,
