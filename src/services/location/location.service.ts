@@ -11,6 +11,9 @@ import { Helpers } from './../../config/helpers';
 })
 export class LocationService {
 
+  /**
+   * HTTP header config
+   */
   headers = new HttpHeaders()
                   .set('Content-Type', 'application/json')
                   .set('Accept', 'application/json');
@@ -21,25 +24,37 @@ export class LocationService {
   constructor(private http: HttpClient, private helpers: Helpers) {
 
   }
-
+  /**
+   * POST /location/create
+   */
   createLocation(location: Location): Observable<Location>  {
     return this.http.post(`${env.apiUrl}/location/create`, location, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
   }
 
+  /**
+   * GET /locations/locations
+   */
   getLocations(paginatonObj?: any): Observable<Location[]> {
-    return this.http.get<Location[]>(`${env.apiUrl}/locations?page=${paginatonObj.page}&limit=${paginatonObj.limit}`, this.httpOptions).pipe(
+    return this.http.get<Location[]>(`${env.apiUrl}/locations?page=${paginatonObj.page}&limit=${paginatonObj.limit}`, this.httpOptions)
+    .pipe(
       catchError(this.helpers.handleError)
     );
   }
 
+  /**
+   * GET /location/id
+   */
   getLocationById(id: string): Observable<Location> {
     return this.http.get<Location>(`${env.apiUrl}/location/${id}`, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
   }
 
+  /**
+   * PUT /location/id
+   */
   updateLocationById(location: Location, id: string): Observable<Location> {
     console.log(env.apiUrl);
     return this.http.put<Location>(`${env.apiUrl}/location/${id}`, location, this.httpOptions).pipe(
@@ -47,6 +62,9 @@ export class LocationService {
     );
   }
 
+  /**
+   * DELETE /location/id
+   */
   deleteLocationById(id: string): Observable<Location> {
     return this.http.delete<Location>(`${env.apiUrl}/location/${id}`, this.httpOptions).pipe(
       catchError(this.helpers.handleError)

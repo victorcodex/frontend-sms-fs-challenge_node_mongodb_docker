@@ -14,7 +14,7 @@ export class Constants {
 
     PAGINATION_OBJ = {
         page: 1,
-        limit: 100
+        limit: 1000
       };
 
 }

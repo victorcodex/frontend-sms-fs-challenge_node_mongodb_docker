@@ -1,3 +1,6 @@
+/**
+ * Location module interface/model
+ */
 export interface Location {
     _id?: string;
     id?: number;

@@ -1,7 +1,25 @@
+
+<mat-form-field>
+    <input matInput [matDatepicker]="picker1" placeholder="Angular forms" [formControl]="dateFilter1">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput [matDatepicker]="picker2" placeholder="Angular forms" [formControl]="dateFilter2">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+
+<button (click)="sortByDateRange()">Filter</button>
+<button (click)="resetRawData()">Reset</button>
 <ag-grid-angular
-    style="height: 500px;"
+    style="width: 782px; height: 500px;"
     class="ag-theme-balham"
-    [rowData]="rowData | async"
+    [rowData]="rowData"
     [columnDefs]="columnDefs"
-    >
+    [enableSorting]="true" 
+    [animateRows]="true"
+    [pagination]="true"
+>
 </ag-grid-angular>

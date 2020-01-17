@@ -9,6 +9,10 @@ import { Constants } from './../config/constants';
 import { LocationService } from './../services/location/location.service';
 import { Helpers } from './../config/helpers';
 import {AgGridModule} from 'ag-grid-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,12 +24,18 @@ import {AgGridModule} from 'ag-grid-angular';
     BrowserModule,
     AgGridModule.withComponents([]),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     Constants,
     LocationService,
-    Helpers
+    Helpers,
+    MatDatepickerModule
   ],
   bootstrap: [
     AppComponent
