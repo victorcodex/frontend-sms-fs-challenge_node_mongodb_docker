@@ -9,7 +9,7 @@ import {GridOptions} from 'ag-grid-community';
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit, OnDestroy {
 
@@ -17,69 +17,25 @@ export class LocationComponent implements OnInit, OnDestroy {
   locations: any;
   loading: boolean = false;
 
+  columnDefs = [
+    {headerName: 'City', field: 'city', sortable: true, filter: true},
+    {headerName: 'Start date', field: 'start_date', sortable: true, filter: true},
+    {headerName: 'End date', field: 'end_date', sortable: true, filter: true},
+    {headerName: 'Price', field: 'price', sortable: true, filter: true},
+    {headerName: 'Status', field: 'status', sortable: true, filter: true},
+    {headerName: 'Color', field: 'color', sortable: true, filter: true}
+  ];
 
-  private gridOptions: GridOptions;
-  title = 'ag-grid-cli';
+rowData: any;
 
   constructor(private locationService: LocationService, private constants: Constants) {
     this.subscriptionManager.add(this.locations);
-
-
-    this.gridOptions = {} as GridOptions;
-    this.gridOptions.animateRows = true;
-    this.gridOptions.gridAutoHeight = true;
-    this.gridOptions.columnDefs = [
-        {
-            headerName: 'Name',
-            field: 'name',
-            sort: 'asc',
-            sortable: true,
-            autoHeight : true,
-            width: 300
-        },
-        {
-            headerName: 'Specialization',
-            field: 'specialization',
-            cellRenderer: this.customCellRendererMethod,
-            autoHeight : true,
-            // cellRendererFramework: SpecializationComponent,
-            width: 300
-        },
-        {
-            headerName: 'Equipment',
-            field: 'equipment',
-            autoHeight : true,
-            cellRenderer: this.customCellRendererMethod,
-            // cellRendererFramework: EquipmentComponent,
-            width: 300
-        },
-    ];
-
-    this.gridOptions.rowData = [
-      {
-        name: 'Studio A',
-        specialization: 'Orchestra <br> Choirs <br> Bands',
-        equipment: '3 Iso Booths <br> SSL Console'
-      },
-      {
-        name: 'Studio B',
-        specialization: 'Video Game Sound <br> ADR',
-        equipment: 'Digidesign 8 Channel D'
-      },
-      {
-        name: 'Studio C',
-        specialization: 'Mixing <br> Mastering <br> Recording Vocals',
-        equipment: 'Digidesign 8 Channel D <br> Dynaudio <br> Meyrs'
-      }
-    ];
-
 
   }
 
   public customCellRendererMethod(param): string {
     return param.value;
   }
-
 
   ngOnInit() {
     this.getLocations();
@@ -88,6 +44,7 @@ export class LocationComponent implements OnInit, OnDestroy {
   createLocation(): void {
     const location: Location = this.constants.LOCATION_MOCK_DATA;
     this.locationService.createLocation(location).subscribe(response => {
+      this.rowData = response['docs'];
       console.log(response);
     });
   }
