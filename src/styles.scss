@@ -6,4 +6,7 @@
     color: #158ef9!important;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: auto 25%; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.ag-paging-page-summary-panel .ag-paging-button button {
+    position: relative!important;
+}
