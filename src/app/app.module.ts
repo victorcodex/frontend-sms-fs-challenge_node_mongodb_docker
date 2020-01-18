@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -29,13 +31,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatButtonModule,
+    MatCardModule,
     MatNativeDateModule
   ],
   providers: [
     Constants,
     LocationService,
     Helpers,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatButtonModule,
+    MatCardModule
   ],
   bootstrap: [
     AppComponent
