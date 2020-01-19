@@ -17,8 +17,8 @@ export class LocationService {
    * HTTP header config
    */
   headers = new HttpHeaders()
-                  .set('Content-Type', 'application/json')
-                  .set('Accept', 'application/json');
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');
   httpOptions = {
     headers: this.headers
   };
@@ -29,7 +29,7 @@ export class LocationService {
   /**
    * POST /location/create
    */
-  createLocation(location: Location): Observable<Location>  {
+  createLocation(location: Location): Observable<Location> {
     return this.http.post(`${env.apiUrl}/location/create`, location, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );
@@ -40,9 +40,9 @@ export class LocationService {
    */
   getLocations(paginatonObj?: any): Observable<Location[]> {
     return this.http.get<Location[]>(`${env.apiUrl}/locations?page=${paginatonObj.page}&limit=${paginatonObj.limit}`, this.httpOptions)
-    .pipe(
-      catchError(this.helpers.handleError)
-    );
+      .pipe(
+        catchError(this.helpers.handleError)
+      );
   }
 
   /**

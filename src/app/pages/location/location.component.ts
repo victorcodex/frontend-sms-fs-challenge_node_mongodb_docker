@@ -1,5 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { Subscription } from 'rxjs';
 
@@ -8,47 +11,71 @@ import { Location } from './../../interfaces/location';
 import { Constants } from './../../config/constants';
 import { Helpers } from './../../config/helpers';
 
-/**
- * TODO: Implement pagination
- * TODO: Write tests for this component
- */
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.scss']
 })
-export class LocationComponent implements OnInit, OnDestroy {
+export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  /**
-   * Initial subsciption
-   */
+  displayedColumns: string[] = ['city', 'start_date', 'end_date', 'price', 'status', 'color'];
+  dataSource: MatTableDataSource<Location[]>;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   subscriptionManager = new Subscription();
-  locations: Location;
+  locations: any;
+  tempLocations: any;
 
-  /**
-   * Table columns set-up
-   */
-  columnDefs = [
-    {headerName: 'City', field: 'city', sortable: true, width: 280},
-    {headerName: 'Start date', field: 'start_date', sortable: true, width: 100},
-    {headerName: 'End date', field: 'end_date', sortable: true, width: 100},
-    {headerName: 'Price', field: 'price', sortable: true, width: 100},
-    {headerName: 'Status', field: 'status', sortable: true, width: 100},
-    {headerName: 'Color', field: 'color', sortable: true, width: 100}
-  ];
+  resultsLength = 0;
+  currentPage: number;
+  totalPages: number;
+  isLoadingResults = true;
 
-rowData: any;
-tempRowData: any;
+  dateFilter1 = new FormControl(new Date());
+  dateFilter2 = new FormControl(new Date());
 
-dateFilter1 = new FormControl(new Date());
-dateFilter2 = new FormControl(new Date());
-serializedDate = new FormControl((new Date()).toISOString());
-
-  constructor(private locationService: LocationService, private constants: Constants, private helpers: Helpers) {
-    this.subscriptionManager.add(this.rowData);
+  constructor(private locationService: LocationService, private constants: Constants, private helpers: Helpers,
+              private elementRef: ElementRef) {
+    this.subscriptionManager.add(this.locations);
+    this.currentPage = constants.PAGINATION_OBJ.page;
   }
 
   ngOnInit() {
+    this.getLocations();
+  }
+
+  ngAfterViewInit() {
+    this.elementRef.nativeElement.querySelector('.mat-paginator-navigation-first')
+      .addEventListener('click', this.goToFirstPage.bind(this));
+    this.elementRef.nativeElement.querySelector('.mat-paginator-navigation-next')
+      .addEventListener('click', this.goToNextPage.bind(this));
+    this.elementRef.nativeElement.querySelector('.mat-paginator-navigation-previous')
+      .addEventListener('click', this.goToPreviousPage.bind(this));
+    this.elementRef.nativeElement.querySelector('.mat-paginator-navigation-last')
+      .addEventListener('click', this.goToLastPage.bind(this));
+  }
+
+  /**
+   * Navigators
+   */
+  goToFirstPage() {
+    this.currentPage = this.constants.PAGINATION_OBJ.page;
+    this.getLocations();
+  }
+
+  goToNextPage() {
+    this.currentPage++;
+    this.getLocations();
+  }
+
+  goToPreviousPage() {
+    this.currentPage--;
+    this.getLocations();
+  }
+
+  goToLastPage() {
+    this.currentPage = this.totalPages;
     this.getLocations();
   }
 
@@ -56,26 +83,26 @@ serializedDate = new FormControl((new Date()).toISOString());
    * Date sorter
    */
   sortByDateRange() {
-    if (this.tempRowData && this.tempRowData.length > 0) {
+    if (this.tempLocations && this.tempLocations.length > 0) {
 
       const startDate = this.helpers.formartDate(this.dateFilter1.value).toString();
       const endDate = this.helpers.formartDate(this.dateFilter2.value).toString();
 
       const getSortedData = this.helpers.locationsObjectDateSorter(
-        this.rowData,
+        this.locations,
         startDate,
         endDate
       );
 
       if (getSortedData && getSortedData.length > 0) {
-        this.rowData = getSortedData;
+        this.locations = getSortedData;
       }
 
     }
   }
 
   resetRawData() {
-    this.rowData = this.tempRowData;
+    this.locations = this.tempLocations;
   }
 
   /**
@@ -92,16 +119,29 @@ serializedDate = new FormControl((new Date()).toISOString());
    * Fetch Locations
    */
   getLocations(): void {
+
+    this.isLoadingResults = true;
+    this.constants.PAGINATION_OBJ.page = this.currentPage;
+
     this.locationService.getLocations(this.constants.PAGINATION_OBJ).subscribe((response: any) => {
-      this.rowData = response.docs;
-      this.tempRowData = response.docs;
+
+      this.dataSource = new MatTableDataSource<Location[]>(response.docs);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+      this.isLoadingResults = false;
+      this.resultsLength = response.totalDocs;
+      this.totalPages = response.totalPages;
+
+      this.locations = response.docs;
+      this.tempLocations = response.docs;
     });
   }
 
   /**
    * Get Location By Id
    */
-  getLocationById(id: string): void {
+  getLocationById(id: string) {
     this.locationService.getLocationById(id).subscribe((response: Location) => {
 
     });
@@ -125,9 +165,6 @@ serializedDate = new FormControl((new Date()).toISOString());
     });
   }
 
-  /**
-   * Unsubscribe all subscriptions in subscription Manager
-   */
   ngOnDestroy(): void {
     this.subscriptionManager.unsubscribe();
   }
