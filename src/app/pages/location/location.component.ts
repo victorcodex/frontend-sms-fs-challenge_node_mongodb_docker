@@ -19,11 +19,12 @@ import { Helpers } from './../../config/helpers';
   styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
+  [x: string]: any;
 
   private subscriptionManager: Subscription;
 
   displayedColumns: string[] = ['city', 'start_date', 'end_date', 'price', 'status', 'color'];
-  dataSource: MatTableDataSource<Location[]>;
+  locations: MatTableDataSource<Location[]>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   tempLocations: any;
@@ -95,7 +96,7 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
       );
 
       if (getSortedData && getSortedData.length > 0) {
-        this.dataSource = new MatTableDataSource<Location[]>(getSortedData);
+        this.locations = new MatTableDataSource<Location[]>(getSortedData);
         this.assignDataSource();
       }
 
@@ -103,8 +104,8 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   assignDataSource(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.locations.paginator = this.paginator;
+    this.locations.sort = this.sort;
   }
 
   resetRawData(): void {
@@ -135,9 +136,9 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptionManager = this.locationService.getLocations(this.constants.PAGINATION_OBJ).subscribe((response: any) => {
 
       if (response.docs.length > 0) {
-        this.dataSource = new MatTableDataSource<Location[]>(response.docs);
+        this.locations = new MatTableDataSource<Location[]>(response.docs);
         this.resultsLength = this.resultsLength > 0 ? this.resultsLength : response.totalDocs;
-        this.dataSource.sort = this.sort;
+        this.locations.sort = this.sort;
         this.isLoadingResults = false;
         this.totalPages = response.totalPages;
         this.tempLocations = response.docs;

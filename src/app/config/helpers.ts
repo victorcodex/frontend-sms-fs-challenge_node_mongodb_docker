@@ -29,9 +29,9 @@ export class Helpers {
     /**
      * Range date sorter for Location object
      */
-    locationsObjectDateSorter(dataSource: any, startDate: string, endDate: string) {
-      if (dataSource && dataSource.length > 0) {
-        const getNewFormat = dataSource.filter((item: Location) => (item.start_date >= startDate && item.start_date <= endDate) );
+    locationsObjectDateSorter(locations: any, startDate: string, endDate: string) {
+      if (locations && locations.length > 0) {
+        const getNewFormat = locations.filter((item: Location) => (item.start_date >= startDate && item.start_date <= endDate) );
         return getNewFormat;
       }
     }

@@ -29,10 +29,10 @@
     </button>
 </mat-card>
 
-<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+<mat-spinner  *ngIf="isLoadingResults"></mat-spinner>
 
 <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="locations" matSort>
   
         <!-- City Column -->
         <ng-container matColumnDef="city">
