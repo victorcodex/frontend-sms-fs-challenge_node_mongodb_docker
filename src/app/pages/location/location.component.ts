@@ -10,6 +10,7 @@ import { LocationService } from './../../services/location/location.service';
 import { Location } from './../../interfaces/location';
 import { Constants } from './../../config/constants';
 import { Helpers } from './../../config/helpers';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-location',
@@ -36,7 +37,7 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   dateFilter2 = new FormControl(new Date());
 
   constructor(private locationService: LocationService, private constants: Constants, private helpers: Helpers,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef, private router: Router, private route: ActivatedRoute) {
     this.subscriptionManager.add(this.locations);
     this.currentPage = constants.PAGINATION_OBJ.page;
   }
@@ -90,20 +91,23 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
       const endDate = this.helpers.formartDate(this.dateFilter2.value).toString();
 
       const getSortedData = this.helpers.locationsObjectDateSorter(
-        this.locations,
+        this.tempLocations,
         startDate,
         endDate
       );
 
       if (getSortedData && getSortedData.length > 0) {
-        this.locations = getSortedData;
+        this.dataSource = new MatTableDataSource<Location[]>(getSortedData);
+        this.assignDataSource();
       }
 
     }
   }
 
   resetRawData() {
-    this.locations = this.tempLocations;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/locations']);
   }
 
   /**
@@ -137,8 +141,6 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataSource.sort = this.sort;
         this.isLoadingResults = false;
         this.totalPages = response.totalPages;
-
-        this.locations = response.docs;
         this.tempLocations = response.docs;
       } else {
         this.isLoadingResults = false;

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { throwError } from 'rxjs';
 
+import { Location } from './../interfaces/location';
+
 /**
  * TODO: Write tests for every method in this helper file
  */
@@ -27,17 +29,11 @@ export class Helpers {
     /**
      * Range date sorter for Location object
      */
-    locationsObjectDateSorter(rowData: any, startDate: string, endDate: string) {
-      if (rowData && rowData.length > 0) {
-        const getNewFormat = rowData.filter((item: any) => (item.start_date >= startDate && item.start_date <= endDate) );
+    locationsObjectDateSorter(dataSource: any, startDate: string, endDate: string) {
+      if (dataSource && dataSource.length > 0) {
+        const getNewFormat = dataSource.filter((item: Location) => (item.start_date >= startDate && item.start_date <= endDate) );
         return getNewFormat;
       }
-
-      // if (rowData && rowData.length > 0) {
-      //   const getNewFormat = rowData.filter((item: any) => item.start_date >=  startDate || endDate <= item.start_date);
-      //   return getNewFormat;
-      // }
-
     }
 
     /**
