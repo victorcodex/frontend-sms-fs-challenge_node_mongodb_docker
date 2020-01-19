@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,7 +11,7 @@ import { LocationService } from './../../services/location/location.service';
 import { Location } from './../../interfaces/location';
 import { Constants } from './../../config/constants';
 import { Helpers } from './../../config/helpers';
-import { Router, ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-location',
@@ -19,15 +20,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  private subscriptionManager: Subscription;
+
   displayedColumns: string[] = ['city', 'start_date', 'end_date', 'price', 'status', 'color'];
   dataSource: MatTableDataSource<Location[]>;
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  subscriptionManager = new Subscription();
-  locations: any;
   tempLocations: any;
-
   resultsLength = 0;
   currentPage: number;
   totalPages: number;
@@ -38,11 +37,10 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private locationService: LocationService, private constants: Constants, private helpers: Helpers,
               private elementRef: ElementRef, private router: Router, private route: ActivatedRoute) {
-    this.subscriptionManager.add(this.locations);
     this.currentPage = constants.PAGINATION_OBJ.page;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getLocations();
   }
 
@@ -60,23 +58,23 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Navigators
    */
-  goToFirstPage() {
+  goToFirstPage(): void {
     this.currentPage = this.constants.PAGINATION_OBJ.page;
     this.getLocations();
     this.assignDataSource();
   }
 
-  goToNextPage() {
+  goToNextPage(): void {
     this.currentPage++;
     this.getLocations();
   }
 
-  goToPreviousPage() {
+  goToPreviousPage(): void {
     this.currentPage--;
     this.getLocations();
   }
 
-  goToLastPage() {
+  goToLastPage(): void {
     this.currentPage = this.totalPages;
     this.getLocations();
   }
@@ -84,7 +82,7 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Date sorter
    */
-  sortByDateRange() {
+  sortByDateRange(): void {
     if (this.tempLocations && this.tempLocations.length > 0) {
 
       const startDate = this.helpers.formartDate(this.dateFilter1.value).toString();
@@ -104,7 +102,12 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  resetRawData() {
+  assignDataSource(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  resetRawData(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['/locations']);
@@ -115,14 +118,10 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   createLocation(): void {
     const location: Location = this.constants.LOCATION_MOCK_DATA;
-    this.locationService.createLocation(location).subscribe(response => {
+    const subscription = this.locationService.createLocation(location).subscribe(response => {
 
     });
-  }
-
-  assignDataSource(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.subscriptionManager.add(subscription);
   }
 
   /**
@@ -133,7 +132,7 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isLoadingResults = true;
     this.constants.PAGINATION_OBJ.page = this.currentPage;
 
-    this.locationService.getLocations(this.constants.PAGINATION_OBJ).subscribe((response: any) => {
+    this.subscriptionManager = this.locationService.getLocations(this.constants.PAGINATION_OBJ).subscribe((response: any) => {
 
       if (response.docs.length > 0) {
         this.dataSource = new MatTableDataSource<Location[]>(response.docs);
@@ -152,28 +151,31 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Get Location By Id
    */
-  getLocationById(id: string) {
-    this.locationService.getLocationById(id).subscribe((response: Location) => {
+  getLocationById(id: string): void {
+    const subscription = this.locationService.getLocationById(id).subscribe((response: Location) => {
 
     });
+    this.subscriptionManager.add(subscription);
   }
 
   /**
    * Update Location By Id
    */
   updateLocationById(location: Location, id: string): void {
-    this.locationService.updateLocationById(location, id).subscribe(response => {
+    const subscription = this.locationService.updateLocationById(location, id).subscribe(response => {
 
     });
+    this.subscriptionManager.add(subscription);
   }
 
   /**
    * Delete Location By Id
    */
   deleteLocationById(id: string): void {
-    this.locationService.deleteLocationById(id).subscribe(response => {
+    const subscription = this.locationService.deleteLocationById(id).subscribe(response => {
 
     });
+    this.subscriptionManager.add(subscription);
   }
 
   ngOnDestroy(): void {
