@@ -9,12 +9,12 @@ export class Constants {
         end_date: '8/19/2013',
         price: '17.40',
         status: 'Once',
-        color : '#819a11'
+        color : '#819a11',
     };
 
     PAGINATION_OBJ = {
         page: 1,
-        limit: 1000
+        limit: 1000,
       };
 
 }

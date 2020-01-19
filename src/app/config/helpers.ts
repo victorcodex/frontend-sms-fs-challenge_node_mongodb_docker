@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { throwError } from 'rxjs';
 
 /**
@@ -43,7 +44,6 @@ export class Helpers {
      * Basic http error handler
      */
     public handleError(error: any) {
-      console.log(error);
       return throwError(error);
     }
 

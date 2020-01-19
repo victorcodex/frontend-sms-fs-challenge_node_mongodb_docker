@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LocationService } from './../../services/location/location.service';
+import { FormControl } from '@angular/forms';
+
 import { Subscription } from 'rxjs';
+
+import { LocationService } from './../../services/location/location.service';
 import { Location } from './../../interfaces/location';
 import { Constants } from './../../config/constants';
 import { Helpers } from './../../config/helpers';
-import { FormControl } from '@angular/forms';
 
 /**
  * TODO: Implement pagination
@@ -82,7 +84,7 @@ serializedDate = new FormControl((new Date()).toISOString());
   createLocation(): void {
     const location: Location = this.constants.LOCATION_MOCK_DATA;
     this.locationService.createLocation(location).subscribe(response => {
-      console.log(response);
+
     });
   }
 
@@ -101,7 +103,7 @@ serializedDate = new FormControl((new Date()).toISOString());
    */
   getLocationById(id: string): void {
     this.locationService.getLocationById(id).subscribe((response: Location) => {
-      console.log(response);
+
     });
   }
 
@@ -110,7 +112,7 @@ serializedDate = new FormControl((new Date()).toISOString());
    */
   updateLocationById(location: Location, id: string): void {
     this.locationService.updateLocationById(location, id).subscribe(response => {
-      console.log(response);
+
     });
   }
 
@@ -119,7 +121,7 @@ serializedDate = new FormControl((new Date()).toISOString());
    */
   deleteLocationById(id: string): void {
     this.locationService.deleteLocationById(id).subscribe(response => {
-      console.log(response);
+
     });
   }
 

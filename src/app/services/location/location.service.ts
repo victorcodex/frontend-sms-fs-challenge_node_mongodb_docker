@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from './../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+
+import { environment as env } from './../../../environments/environment';
 import { Location } from './../../interfaces/location';
 import { Helpers } from './../../config/helpers';
 
@@ -44,7 +46,7 @@ export class LocationService {
   }
 
   /**
-   * GET /location/id
+   * GET /location/:id
    */
   getLocationById(id: string): Observable<Location> {
     return this.http.get<Location>(`${env.apiUrl}/location/${id}`, this.httpOptions).pipe(
@@ -53,10 +55,9 @@ export class LocationService {
   }
 
   /**
-   * PUT /location/id
+   * PUT /location/:id
    */
   updateLocationById(location: Location, id: string): Observable<Location> {
-    console.log(env.apiUrl);
     return this.http.put<Location>(`${env.apiUrl}/location/${id}`, location, this.httpOptions).pipe(
       catchError(this.helpers.handleError)
     );

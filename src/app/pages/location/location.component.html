@@ -1,18 +1,34 @@
 <mat-card mat-card-content class="mat-card-content-custom">
+    From: 
     <mat-form-field>
         <input matInput [matDatepicker]="picker1" placeholder="Angular forms" [formControl]="dateFilter1">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
-    
+    To: 
     <mat-form-field>
         <input matInput [matDatepicker]="picker2" placeholder="Angular forms" [formControl]="dateFilter2">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
-    
-    <button mat-button mat-raised-button class="filter-btn" color="primary" (click)="sortByDateRange()">Filter</button>
-    <button mat-button mat-raised-button class="reset-btn" color="warn" (click)="resetRawData()">Reset</button>
+    <button 
+        mat-button 
+        mat-raised-button 
+        class="filter-btn" 
+        color="primary"
+        (click)="sortByDateRange()"
+    >
+        Filter
+    </button>
+    <button 
+        mat-button 
+        mat-raised-button 
+        class="reset-btn" 
+        color="warn"
+        (click)="resetRawData()"
+    >
+        Reset
+    </button>
 </mat-card>
 
 <ag-grid-angular

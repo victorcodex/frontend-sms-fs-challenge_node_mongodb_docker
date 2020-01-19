@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,15 +11,18 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AgGridModule } from 'ag-grid-angular';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LocationComponent } from './pages/location/location.component';
-import { Constants } from './config/constants';
-import { LocationService } from './services/location/location.service';
-import { Helpers } from './config/helpers';
+import { AppRoutingModule } from './../../app-routing.module';
+import { AppComponent } from './../../app.component';
+import { Constants } from './../../config/constants';
+import { LocationService } from './../../services/location/location.service';
+import { Helpers } from './../../config/helpers';
+import { LocationComponent } from './location.component';
 
 
-describe('AppComponent', () => {
+describe('LocationComponent', () => {
+  let component: LocationComponent;
+  let fixture: ComponentFixture<LocationComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -52,23 +55,14 @@ describe('AppComponent', () => {
       ],
     }).compileComponents();
   }));
-
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LocationComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  // it(`should have as title 'ngApp'`, () => {
-  //   const fixture = TestBed.createComponent(AppComponent)
-  //   const app = fixture.debugElement.componentInstance
-  //   expect(app.title).toEqual('ngApp')
-  // });
+  it('should create Location Component', () => {
+    expect(component).toBeTruthy();
+  });
 
-  // it('should render title', () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.debugElement.nativeElement
-  //   expect(compiled.querySelector('.content span').textContent).toContain('ngApp app is running!');
-  // });
 });
