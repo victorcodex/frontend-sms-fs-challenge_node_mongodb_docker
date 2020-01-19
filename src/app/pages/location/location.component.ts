@@ -62,6 +62,7 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
   goToFirstPage() {
     this.currentPage = this.constants.PAGINATION_OBJ.page;
     this.getLocations();
+    this.assignDataSource();
   }
 
   goToNextPage() {
@@ -115,6 +116,11 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  assignDataSource(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   /**
    * Fetch Locations
    */
@@ -125,16 +131,19 @@ export class LocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.locationService.getLocations(this.constants.PAGINATION_OBJ).subscribe((response: any) => {
 
-      this.dataSource = new MatTableDataSource<Location[]>(response.docs);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      if (response.docs.length > 0) {
+        this.dataSource = new MatTableDataSource<Location[]>(response.docs);
+        this.resultsLength = this.resultsLength > 0 ? this.resultsLength : response.totalDocs;
+        this.dataSource.sort = this.sort;
+        this.isLoadingResults = false;
+        this.totalPages = response.totalPages;
 
-      this.isLoadingResults = false;
-      this.resultsLength = response.totalDocs;
-      this.totalPages = response.totalPages;
+        this.locations = response.docs;
+        this.tempLocations = response.docs;
+      } else {
+        this.isLoadingResults = false;
+      }
 
-      this.locations = response.docs;
-      this.tempLocations = response.docs;
     });
   }
 

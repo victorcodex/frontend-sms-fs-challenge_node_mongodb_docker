@@ -19,6 +19,7 @@ import { LocationComponent } from './pages/location/location.component';
 import { Constants } from './config/constants';
 import { LocationService } from './services/location/location.service';
 import { Helpers } from './config/helpers';
+import { MatInputModule } from '@angular/material/input';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -42,6 +43,7 @@ describe('AppComponent', () => {
         MatSortModule,
         MatPaginatorModule,
         MatProgressSpinnerModule,
+        MatInputModule,
       ],
       providers: [
         Constants,
@@ -52,6 +54,7 @@ describe('AppComponent', () => {
         MatCardModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatInputModule,
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,

@@ -19,6 +19,7 @@ import { LocationService } from './../../services/location/location.service';
 import { Helpers } from './../../config/helpers';
 import { LocationComponent } from './location.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
 
 
 describe('LocationComponent', () => {
@@ -46,6 +47,7 @@ describe('LocationComponent', () => {
         MatSortModule,
         MatPaginatorModule,
         MatProgressSpinnerModule,
+        MatInputModule,
       ],
       providers: [
         Constants,
@@ -56,6 +58,7 @@ describe('LocationComponent', () => {
         MatCardModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatInputModule,
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,
